@@ -1,9 +1,12 @@
 import sdk from "./1-initialize-sdk.js";
 
+import dotenv from "dotenv";
+dotenv.config();
+
 (async () => {
     try {
         const amount = 1_000_000;
-        const token = await sdk.getContract("0xfDD014e7FC81FeFCe729C0e058872f91675a4644", "token");
+        const token = await sdk.getContract(process.env.TOKEN_ADDRESS, "token");
 
         //Mint tokens
         await token.mint(amount);

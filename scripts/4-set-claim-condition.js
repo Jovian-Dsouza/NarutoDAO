@@ -1,9 +1,11 @@
 import sdk from "./1-initialize-sdk.js";
 import { MaxUint256 } from "@ethersproject/constants";
+import dotenv from "dotenv";
+dotenv.config();
 
 (async () => {
   try {
-    const editionDrop = await sdk.getContract("0xCA384f0A630ef90B55601f07D628d07c284772f4", "edition-drop");
+    const editionDrop = await sdk.getContract(process.env.EDITION_DROP_ADDRESS, "edition-drop");
     // We define our claim conditions, this is an array of objects because
     // we can have multiple phases starting at different times if we want to
     const claimConditions = [{
