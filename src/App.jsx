@@ -1,7 +1,8 @@
 import { JsonRpcProvider } from '@ethersproject/providers';
-import { useAddress, ConnectWallet, Web3Button, useContract, useNFTBalance } from '@thirdweb-dev/react';
+import { useAddress, ConnectWallet, Web3Button, useContract, useNFTBalance, useNetwork } from '@thirdweb-dev/react';
 import { useState, useEffect, useMemo } from "react";
 import { AddressZero } from "@ethersproject/constants";
+import { ChainId } from '@thirdweb-dev/sdk';
 
 const App = () => {
 
@@ -12,6 +13,7 @@ const App = () => {
 
   const address = useAddress();
   console.log("Address :", address);
+  const network = useNetwork();
 
   const { contract: editionDrop } = useContract(editionDropAddress, "edition-drop");
   const { contract: token } = useContract(tokenAddress, 'token');
@@ -121,6 +123,18 @@ const App = () => {
     checkIfUserHasVoted();
   }, [hasClaimedNFT, proposals, address, vote]);
 
+  if (address && (network?.[0].data.chain.id !== ChainId.Goerli)) {
+    return (
+      <div className="unsupported-network">
+        <h2>Please connect to Goerli</h2>
+        <p>
+          This dapp only works on the Goerli network, please switch networks
+          in your connected wallet.
+        </p>
+      </div>
+    );
+  }
+  
   if(!address){
     return (
       <div className="landing">
